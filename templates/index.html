@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу | Анастасия & Илья</title>
+    <link href="https://cdn.fontsource.org/fonts/noto-serif-cyrillic/400.css" rel="stylesheet">
+    <link href="https://cdn.fontsource.org/fonts/noto-serif-cyrillic/700.css" rel="stylesheet">
+    <link href="https://cdn.fontsource.org/fonts/great-vibes/400.css" rel="stylesheet">
+    <link href="https://cdn.fontsource.org/fonts/caveat/400.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #657487;
+            --secondary-color: #97adc4;
+            --accent-color: #575a5f;
+            --text-dark: #575a5f;
+            --text-light: #898788;
+            --light-gray: #c0c0c0;
+            --white: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e8ecf0 100%);
+        }
+
+        body {
+            font-family: 'Noto Serif Cyrillic', serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Сердечки на заднем фоне */
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(151, 173, 196, 0.3);
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Основной контент - выше сердечек */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: url('https://img.freepik.com/premium-photo/wedding-background-with-two-gold-rings_92795-2340.jpg') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(101, 116, 135, 0.85) 0%, rgba(151, 173, 196, 0.75) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .invitation-text {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .couple-names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: var(--white);
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .wedding-date {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin: 30px 0;
+            padding: 15px 30px;
+            border: 2px solid var(--light-gray);
+            display: inline-block;
+            background: rgba(87, 90, 95, 0.5);
+            border-radius: 10px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .scroll-indicator svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--light-gray);
+        }
+
+        /* Центрирование всех секций */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .story-section {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(101, 116, 135, 0.15);
+            margin: 40px auto;
+            max-width: 900px;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .story-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .story-text {
+            text-align: center;
+            line-height: 1.8;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            max-width: 700px;
+        }
+
+        .rings-image {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(101, 116, 135, 0.2);
+        }
+
+        .details-section {
+            background: linear-gradient(135deg, #e8ecf0 0%, var(--white) 100%);
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 900px;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .detail-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(101, 116, 135, 0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--light-gray);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(101, 116, 135, 0.2);
+        }
+
+        .detail-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .detail-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .detail-text {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .countdown-section {
+            text-align: center;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 900px;
+            box-shadow: 0 10px 40px rgba(101, 116, 135, 0.15);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .countdown-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(101, 116, 135, 0.3);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rsvp-section {
+            background: linear-gradient(135deg, #e8ecf0 0%, var(--white) 100%);
+            border-radius: 20px;
+            margin: 40px auto;
+            padding: 40px;
+            max-width: 900px;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .rsvp-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--white);
+            color: var(--text-dark);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(101, 116, 135, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .form-radio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .form-radio input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(101, 116, 135, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .map-section {
+            background: var(--white);
+            border-radius: 20px;
+            margin: 40px auto;
+            overflow: hidden;
+            max-width: 900px;
+            box-shadow: 0 10px 40px rgba(101, 116, 135, 0.15);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #e8ecf0 0%, #d0d5db 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-subtext {
+            opacity: 0.9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(87, 90, 95, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: modalIn 0.3s ease;
+            border: 3px solid var(--secondary-color);
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .modal-btn:hover {
+            box-shadow: 0 5px 20px rgba(101, 116, 135, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .couple-names {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .countdown-item {
+                min-width: 70px;
+                padding: 15px 20px;
+            }
+
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+
+            .detail-card {
+                padding: 20px;
+            }
+            
+            .story-content {
+                padding: 30px 20px;
+            }
+            
+            .details-grid {
+                padding: 30px 20px;
+            }
+            
+            .rsvp-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Сердечки на заднем фоне -->
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="content-wrapper">
+        <header class="hero">
+            <div class="hero-content">
+                <p class="invitation-text">Приглашаем вас на свадьбу</p>
+                <h1 class="couple-names">{{ wedding_info.bride_name }} & {{ wedding_info.groom_name }}</h1>
+                <div class="wedding-date">
+                    📅 {{ wedding_info.wedding_date|replace('-', '.') }}
+                </div>
+            </div>
+            <div class="scroll-indicator" onclick="document.getElementById('story').scrollIntoView({ behavior: 'smooth' })">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+            </div>
+        </header>
+
+        <div class="container">
+            <section id="story" class="story-section">
+                <h2 class="section-title">Наша История</h2>
+                <div class="story-content">
+                    <img src="https://image.qwenlm.ai/public_source/75e0a016-ca2e-4939-a61a-7d7da3b3cde4/105fb341f-4981-459a-a1ef-67d60d40b0ff.png" alt="Свадебные кольца" class="rings-image">
+                    <p class="story-text">
+                        Дорогие друзья и родные! Мы счастливы пригласить вас разделить с нами 
+                        один из самых важных дней в нашей жизни. Ваша поддержка и любовь 
+                        сопровождали нас на протяжении всего пути, и мы хотим, чтобы вы 
+                        были частью нашего праздника любви.
+                    </p>
+                </div>
+            </section>
+
+            <section class="details-section">
+                <h2 class="section-title">Детали События</h2>
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">💒</div>
+                        <h3 class="detail-title">Церемония</h3>
+                        <p class="detail-text">15:00<br>{{ wedding_info.ceremony_place }}</p>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon">🥂</div>
+                        <h3 class="detail-title">Банкет</h3>
+                        <p class="detail-text">18:00<br>{{ wedding_info.banquet_place }}</p>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-icon">👔</div>
+                        <h3 class="detail-title">Дресс-код</h3>
+                        <p class="detail-text">{{ wedding_info.dress_code }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="countdown-section">
+                <h2 class="section-title">До Свадьбы Осталось</h2>
+                <p class="countdown-title">Мы с нетерпением ждём этого дня!</p>
+                <div class="countdown-timer" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Дней</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Часов</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Минут</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Секунд</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="rsvp-section">
+                <h2 class="section-title">Подтвердите Присутствие</h2>
+                <form class="rsvp-form" id="rsvpForm">
+                    <div class="form-group">
+                        <label class="form-label">Ваше Имя и Фамилия</label>
+                        <input type="text" class="form-input" id="name" placeholder="Иван Иванов" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" class="form-input" id="phone" placeholder="+7 (999) 000-00-00" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Сможете ли вы присутствовать?</label>
+                        <div class="form-radio-group">
+                            <label class="form-radio">
+                                <input type="radio" name="attendance" value="yes" checked>
+                                С удовольствием приду
+                            </label>
+                            <label class="form-radio">
+                                <input type="radio" name="attendance" value="plus1">
+                                Приду с парой
+                            </label>
+                            <label class="form-radio">
+                                <input type="radio" name="attendance" value="no">
+                                К сожалению, не смогу
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Пожелания или вопросы</label>
+                        <textarea class="form-textarea" id="wishes" placeholder="Ваши пожелания, вопросы по меню, аллергия..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Отправить Ответ</button>
+                </form>
+            </section>
+
+            <section class="map-section">
+                <h2 class="section-title">Место Проведения</h2>
+                <div class="map-container">
+                    📍 {{ wedding_info.ceremony_place }}
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <p class="footer-text">{{ wedding_info.groom_name }} & {{ wedding_info.bride_name }}</p>
+            <p class="footer-subtext">{{ wedding_info.wedding_date|replace('-', '.') }}</p>
+            <p class="footer-subtext" style="margin-top: 15px; font-size: 0.9rem;">С любовью ждём вас! 💕</p>
+        </footer>
+
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="modal-icon">💌</div>
+                <h3 class="modal-title">Спасибо!</h3>
+                <p class="modal-text">Ваш ответ успешно отправлен. Мы с нетерпением ждём встречи с вами!</p>
+                <button class="modal-btn" onclick="closeModal()">Закрыть</button>
+            </div>
+        </div>
+
+        <div class="modal" id="errorModal">
+            <div class="modal-content">
+                <div class="modal-icon">⚠️</div>
+                <h3 class="modal-title">Ошибка</h3>
+                <p class="modal-text" id="errorMessage"></p>
+                <button class="modal-btn" onclick="closeErrorModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wedding date - используем дату из базы данных
+        const weddingDate = new Date('{{ wedding_info.wedding_date }}T15:00:00').getTime();
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Floating hearts animation - плавающие сердечки на заднем плане
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartSymbols = ['💙', '🤍', '💜', '🩵', '💫', '❤️', '💖', '💗'];
+            
+            // Создаем 30 сердечек для фона
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.width = 'auto';
+                heart.style.height = 'auto';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heart.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                heart.style.opacity = Math.random() * 0.4 + 0.1;
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        createHearts();
+
+        // Функции для модальных окон
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.remove('active');
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorModal').classList.add('active');
+        }
+
+        // Form submission with AJAX
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const wishes = document.getElementById('wishes').value.trim();
+            
+            // Проверка имени
+            if (!name || name.length < 2) {
+                showError('Пожалуйста, введите ваше имя и фамилию');
+                return;
+            }
+            
+            // Проверка телефона
+            const phoneRegex = /^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+            if (!phoneRegex.test(phone)) {
+                showError('Пожалуйста, введите корректный номер телефона (например: +7 999 000-00-00)');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('phone', phone);
+            formData.append('attendance', attendance);
+            formData.append('wishes', wishes);
+            
+            try {
+                const response = await fetch('/api/rsvp', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('successModal').classList.add('active');
+                    this.reset();
+                } else {
+                    showError(result.message || 'Произошла ошибка при отправке');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
+            }
+        });
+
+        // Close modal on outside click
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        document.getElementById('errorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeErrorModal();
+            }
+        });
+
+        // Intersection Observer для анимации появления
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.detail-card, .story-content, .countdown-section, .rsvp-section, .map-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

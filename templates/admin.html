@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Свадьба</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif Cyrillic', serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8ecf0 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #657487;
+            margin-bottom: 30px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(101,116,135,0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #657487;
+        }
+        
+        .stat-label {
+            color: #898788;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(101,116,135,0.1);
+        }
+        
+        th {
+            background: #657487;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e8ecf0;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .status-yes { background: #d4edda; color: #155724; }
+        .status-plus1 { background: #fff3cd; color: #856404; }
+        .status-no { background: #f8d7da; color: #721c24; }
+        
+        .export-btn {
+            background: #97adc4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .export-btn:hover {
+            background: #657487;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Админ-панель приглашений на свадьбу</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.total }}</div>
+                <div class="stat-label">Всего ответов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.coming }}</div>
+                <div class="stat-label">Придут</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.coming_plus }}</div>
+                <div class="stat-label">Придут с парой</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.not_coming }}</div>
+                <div class="stat-label">Не придут</div>
+            </div>
+        </div>
+        
+        <button class="export-btn" onclick="exportToCSV()">📥 Экспорт в CSV</button>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Телефон</th>
+                    <th>Статус</th>
+                    <th>Пожелания</th>
+                    <th>Дата ответа</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rsvp in rsvps %}
+                <tr>
+                    <td>{{ rsvp.name }}</td>
+                    <td>{{ rsvp.phone }}</td>
+                    <td>
+                        {% if rsvp.attendance == 'yes' %}
+                            <span class="status status-yes">✅ Приду</span>
+                        {% elif rsvp.attendance == 'plus1' %}
+                            <span class="status status-plus1">👥 Приду с парой</span>
+                        {% else %}
+                            <span class="status status-no">❌ Не смогу</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ rsvp.wishes or '—' }}</td>
+                    <td>{{ rsvp.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        function exportToCSV() {
+            const rows = [];
+            document.querySelectorAll('table tbody tr').forEach(row => {
+                const cols = row.querySelectorAll('td');
+                rows.push([
+                    cols[0].innerText,
+                    cols[1].innerText,
+                    cols[2].innerText.replace(/[✅👥❌]/g, '').trim(),
+                    cols[3].innerText,
+                    cols[4].innerText
+                ].join(','));
+            });
+            
+            const csv = 'Имя,Телефон,Статус,Пожелания,Дата ответа\n' + rows.join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'rsvp_list.csv';
+            link.click();
+        }
+    </script>
+</body>
+</html>
