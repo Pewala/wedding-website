@@ -266,6 +266,68 @@
             line-height: 1.6;
         }
 
+        /* Стили для цветовой палитры дресс-кода */
+        .color-palette {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .color-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 40px;
+            padding: 8px 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .color-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .color-code {
+            font-family: monospace;
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Адаптация под тёмный фон для читаемости текста */
+        .color-item[data-bg-dark="true"] .color-name,
+        .color-item[data-bg-dark="true"] .color-code {
+            color: #f0f0f0;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .color-item[data-bg-dark="false"] .color-name,
+        .color-item[data-bg-dark="false"] .color-code {
+            color: #2c2c2c;
+        }
+
         .gift-note {
             font-size: 0.9rem;
             margin-top: 12px;
@@ -562,6 +624,19 @@
             .rsvp-section {
                 padding: 30px 20px;
             }
+
+            .color-item {
+                padding: 6px 12px;
+            }
+
+            .color-swatch {
+                width: 30px;
+                height: 30px;
+            }
+
+            .color-name {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -589,7 +664,7 @@
             <section id="story" class="story-section">
                 <h2 class="section-title">Наша История</h2>
                 <div class="story-content">
-                    <img src="https://sun9-18.userapi.com/s/v1/ig2/j9BOUIueaeEbngVPeOesdHugkEQPvfVnnF2_00rAqPyqbNFRn0Vx0IcQK_awxj0fXTxBWz3Noq6Iy5BfmRZoWqEK.jpg?quality=95&as=32x24,48x36,72x54,108x81,160x120,240x180,360x270,480x360,540x405,640x480,720x540,1080x810,1280x960&from=bu&u=zRwLd2fUGrZwVTTcuwB8LWJaYF-Mx7jQVCtXWo6C-sM&cs=1280x0" alt="Свадебные кольца" class="rings-image">
+                    <img src="https://image.qwenlm.ai/public_source/75e0a016-ca2e-4939-a61a-7d7da3b3cde4/105fb341f-4981-459a-a1ef-67d60d40b0ff.png" alt="Свадебные кольца" class="rings-image">
                     <p class="story-text">
                         Дорогие друзья и родные! Мы счастливы пригласить вас разделить с нами 
                         один из самых важных дней в нашей жизни. Ваша поддержка и любовь 
@@ -612,10 +687,15 @@
                         <h3 class="detail-title">Банкет</h3>
                         <p class="detail-text">18:00<br>{{ wedding_info.banquet_place }}</p>
                     </div>
+                    <!-- ОБНОВЛЕННЫЙ БЛОК ДРЕСС-КОДА с цветными ячейками -->
                     <div class="detail-card">
-                        <div class="detail-icon">👔</div>
+                        <div class="detail-icon">👗🎩</div>
                         <h3 class="detail-title">Дресс-код</h3>
-                        <p class="detail-text">{{ wedding_info.dress_code }}</p>
+                        <p class="detail-text" style="margin-bottom: 12px;">Элегантный образ в оттенках:</p>
+                        <div class="color-palette" id="dressCodePalette">
+                            <!-- цвета будут динамически вставлены через JS, но для надёжности продублируем структурой -->
+                        </div>
+                        <p class="detail-text" style="margin-top: 12px; font-size: 0.85rem;">Приветствуются любые сочетания из палитры ✨</p>
                     </div>
                     <!-- Новая карточка: Пожелания подарков -->
                     <div class="detail-card">
@@ -701,7 +781,7 @@
         </div>
 
         <footer class="footer">
-            <p class="footer-text">{{ wedding_info.bride_name }} & {{ wedding_info.groom_name }}</p>
+            <p class="footer-text">{{ wedding_info.groom_name }} & {{ wedding_info.bride_name }}</p>
             <p class="footer-subtext">{{ wedding_info.wedding_date|replace('-', '.') }}</p>
             <p class="footer-subtext" style="margin-top: 15px; font-size: 0.9rem;">С любовью ждём вас! 💕</p>
         </footer>
@@ -726,6 +806,68 @@
     </div>
 
     <script>
+        // ----- Цветовая палитра дресс-кода (названия, код, перевод) -----
+        const dressColors = [
+            { name: "Глубокий синий", nameEng: "Deep Blue", code: "#1D2D44" },
+            { name: "Пасмурно-синий", nameEng: "Cloudy Blue", code: "#344966" },
+            { name: "Небесно-голубой", nameEng: "Sky Blue", code: "#C7D9E5" },
+            { name: "Светло-бежевый", nameEng: "Light Beige", code: "#F5EFEB" }
+        ];
+
+        // Функция для определения яркости цвета (порог ~0.5)
+        function isColorDark(hex) {
+            // Приводим hex к полному формату #RRGGBB
+            let normalizedHex = hex.substring(1);
+            if (normalizedHex.length === 3) {
+                normalizedHex = normalizedHex.split('').map(c => c + c).join('');
+            }
+            const r = parseInt(normalizedHex.substring(0, 2), 16);
+            const g = parseInt(normalizedHex.substring(2, 4), 16);
+            const b = parseInt(normalizedHex.substring(4, 6), 16);
+            // Формула яркости (воспринимаемая)
+            const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+            return brightness < 140; // если яркость меньше 140 считаем тёмным
+        }
+
+        // Заполняем палитру в блоке дресс-кода
+        function renderDressCodePalette() {
+            const container = document.getElementById('dressCodePalette');
+            if (!container) return;
+            container.innerHTML = '';
+            dressColors.forEach(color => {
+                const isDark = isColorDark(color.code);
+                const item = document.createElement('div');
+                item.className = 'color-item';
+                item.setAttribute('data-bg-dark', isDark);
+                item.style.backgroundColor = color.code;
+                
+                // Контейнер для названия и кода
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'color-info';
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'color-name';
+                nameSpan.textContent = `${color.name} (${color.nameEng})`;
+                const codeSpan = document.createElement('span');
+                codeSpan.className = 'color-code';
+                codeSpan.textContent = color.code;
+                infoDiv.appendChild(nameSpan);
+                infoDiv.appendChild(codeSpan);
+                
+                // Круглый образец цвета (дублирующий, но наглядный)
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+                swatch.style.backgroundColor = color.code;
+                swatch.style.border = `2px solid ${isDark ? '#ddd' : '#555'}`;
+                
+                item.appendChild(infoDiv);
+                item.appendChild(swatch);
+                container.appendChild(item);
+            });
+        }
+
+        // Вызов отрисовки палитры
+        renderDressCodePalette();
+
         // Wedding date - используем дату из базы данных
         const weddingDate = new Date('{{ wedding_info.wedding_date }}T15:00:00').getTime();
 
