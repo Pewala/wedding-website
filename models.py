@@ -27,10 +27,10 @@ class WeddingInfo(db.Model):
     __tablename__ = 'wedding_info'
     
     id = db.Column(db.Integer, primary_key=True)
-    bride_name = db.Column(db.String(50), default='Екатерина')
-    groom_name = db.Column(db.String(50), default='Александр')
-    wedding_date = db.Column(db.String(20), default='2025-07-15')
+    bride_name = db.Column(db.String(50), default='Анастасия')
+    groom_name = db.Column(db.String(50), default='Илья')
+    wedding_date = db.Column(db.String(20), default='2026-07-10')
     wedding_time = db.Column(db.String(10), default='15:00')
-    ceremony_place = db.Column(db.String(200), default='Дворец Бракосочетания №1, ул. Английская набережная, 28')
-    banquet_place = db.Column(db.String(200), default='Ресторан "Grand Palace", пр. Ленина, 45')
+    ceremony_place = db.Column(db.String(200), default='Дворец Бракосочетания, ул. Никитская, 96')
+    banquet_place = db.Column(db.String(200), default='Кафе "Дружба", пр. Текстильщиков, 92')
     dress_code = db.Column(db.String(200), default='Вечерний, пастельные тона, Black Tie Optional')
