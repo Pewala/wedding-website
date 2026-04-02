@@ -229,14 +229,14 @@
 
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
             padding: 40px;
         }
 
         .detail-card {
             background: var(--white);
-            padding: 30px;
+            padding: 30px 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 20px rgba(101, 116, 135, 0.12);
@@ -264,6 +264,15 @@
         .detail-text {
             color: var(--text-light);
             line-height: 1.6;
+        }
+
+        .gift-note {
+            font-size: 0.9rem;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--light-gray);
+            color: var(--accent-color);
+            font-style: italic;
         }
 
         .countdown-section {
@@ -607,6 +616,19 @@
                         <div class="detail-icon">👔</div>
                         <h3 class="detail-title">Дресс-код</h3>
                         <p class="detail-text">{{ wedding_info.dress_code }}</p>
+                    </div>
+                    <!-- Новая карточка: Пожелания подарков -->
+                    <div class="detail-card">
+                        <div class="detail-icon">🎁🍾</div>
+                        <h3 class="detail-title">Вместо цветов</h3>
+                        <p class="detail-text">
+                            Мы будем рады, если вместо цветов вы подарите нам бутылку алкоголя с памятной биркой.
+                        </p>
+                        <div class="gift-note">
+                            💌 <strong>Идея для бирки:</strong> «Откройте эту бутылку, когда…»<br>
+                            Например: «…родится первенец», «…отпразднуем 5 лет», «…купим дом».
+                            Каждый глоток станет маленьким праздником!
+                        </div>
                     </div>
                 </div>
             </section>
