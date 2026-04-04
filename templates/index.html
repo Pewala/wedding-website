@@ -755,10 +755,6 @@
                                 С удовольствием приду
                             </label>
                             <label class="form-radio">
-                                <input type="radio" name="attendance" value="plus1">
-                                Приду с парой
-                            </label>
-                            <label class="form-radio">
                                 <input type="radio" name="attendance" value="no">
                                 К сожалению, не смогу
                             </label>
@@ -974,6 +970,8 @@
                 if (result.success) {
                     document.getElementById('successModal').classList.add('active');
                     this.reset();
+                    // Сбрасываем radio на значение по умолчанию
+                    document.querySelector('input[name="attendance"][value="yes"]').checked = true;
                 } else {
                     showError(result.message || 'Произошла ошибка при отправке');
                 }
